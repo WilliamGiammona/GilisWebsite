@@ -28,6 +28,7 @@ export default function About() {
         </div>
 
         {/* Right Section - Content */}
+
         <div className="lg:col-span-6 space-y-8 bg-black">
           {/* Description */}
           <p className="text-[#b0b0b0] font-thin pb-4 w-[70%]">
