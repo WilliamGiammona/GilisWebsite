@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Emily from "../../../../public/images/storyboard/concept-design/emotional-logical/Emily.jpg";
+import VideoFrontPic from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalVidoeFrontPic.png";
 import { IoMdClose } from "react-icons/io";
 
 const EmotionalLogicalConcept = () => {
@@ -12,7 +12,7 @@ const EmotionalLogicalConcept = () => {
       <div onClick={() => setShowVideo(true)} className="cursor-pointer">
         <figure className="h-[150px] md:h-[400px] flex relative">
           <Image
-            src={Emily}
+            src={VideoFrontPic}
             alt="Concept Design Preview"
             className="w-full h-[100%]"
             priority
