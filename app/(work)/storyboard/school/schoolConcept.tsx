@@ -1,18 +1,40 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { StaticImageData } from "next/image";
+
 import SchoolCharacters from "../../../../public/images/storyboard/concept-design/school/SchoolCharacters.jpg";
 import Classroom from "../../../../public/images/storyboard/concept-design/school/Classroom.jpg";
 import Hallway from "../../../../public/images/storyboard/concept-design/school/Hallway.jpg";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 
-const EmotionalLogicalConcept = () => {
+const SchoolConcept = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showCarousel, setShowCarousel] = useState(false);
 
-  const images = [SchoolCharacters, Classroom, Hallway];
+  // Memoize the images array
+  const images = useMemo<StaticImageData[]>(
+    () => [SchoolCharacters, Classroom, Hallway],
+    []
+  );
+
+  // Preload adjacent images
+  useEffect(() => {
+    if (showCarousel) {
+      const nextIndex = (currentIndex + 1) % images.length;
+      const prevIndex =
+        currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+
+      // Create new image elements for preloading
+      const preloadNext = document.createElement("img");
+      const preloadPrev = document.createElement("img");
+
+      // Set the sources
+      preloadNext.src = images[nextIndex].src;
+      preloadPrev.src = images[prevIndex].src;
+    }
+  }, [currentIndex, showCarousel, images]);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -24,17 +46,17 @@ const EmotionalLogicalConcept = () => {
 
   const closeCarousel = () => {
     setShowCarousel(false);
-    setCurrentIndex(0); // Reset to first image when closing
+    setCurrentIndex(0);
   };
 
   return (
     <>
       <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
-        <figure className="h-[150px] md:h-[250px]  flex  relative">
+        <figure className="h-[150px] md:h-[250px] flex relative">
           <Image
             src={SchoolCharacters}
             alt="Concept Design Preview"
-            className="w-full h-[100%]  "
+            className="w-full h-[100%]"
             priority
           />
         </figure>
@@ -62,6 +84,7 @@ const EmotionalLogicalConcept = () => {
               className="max-w-full max-h-full object-contain"
               width={1200}
               height={800}
+              priority={true}
               onClick={(e) => e.stopPropagation()}
             />
             <button
@@ -86,4 +109,4 @@ const EmotionalLogicalConcept = () => {
   );
 };
 
-export default EmotionalLogicalConcept;
+export default SchoolConcept;

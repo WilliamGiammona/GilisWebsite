@@ -1,18 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { StaticImageData } from "next/image";
+
 import Belle from "../../../../public/images/storyboard/concept-design/introvert-club/Belle.jpg";
 import Juliet from "../../../../public/images/storyboard/concept-design/introvert-club/Juliet.jpg";
 import Terry from "../../../../public/images/storyboard/concept-design/introvert-club/Terry.jpg";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 
 const IntrovertClubConcept = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showCarousel, setShowCarousel] = useState(false);
 
-  const images = [Belle, Juliet, Terry];
+  // Memoize the images array
+  const images = useMemo<StaticImageData[]>(() => [Belle, Juliet, Terry], []);
+
+  // Preload adjacent images
+  useEffect(() => {
+    if (showCarousel) {
+      const nextIndex = (currentIndex + 1) % images.length;
+      const prevIndex =
+        currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+
+      // Create new image elements for preloading
+      const preloadNext = document.createElement("img");
+      const preloadPrev = document.createElement("img");
+
+      // Set the sources
+      preloadNext.src = images[nextIndex].src;
+      preloadPrev.src = images[prevIndex].src;
+    }
+  }, [currentIndex, showCarousel, images]);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -24,17 +43,17 @@ const IntrovertClubConcept = () => {
 
   const closeCarousel = () => {
     setShowCarousel(false);
-    setCurrentIndex(0); // Reset to first image when closing
+    setCurrentIndex(0);
   };
 
   return (
     <>
       <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
-        <figure className="h-[150px] md:h-[400px]  flex  relative">
+        <figure className="h-[150px] md:h-[400px] flex relative">
           <Image
             src={Belle}
             alt="Concept Design Preview"
-            className="w-full h-[100%] "
+            className="w-full h-[100%]"
             priority
           />
         </figure>
@@ -62,6 +81,7 @@ const IntrovertClubConcept = () => {
               className="max-w-full max-h-full object-contain"
               width={1200}
               height={800}
+              priority={true}
               onClick={(e) => e.stopPropagation()}
             />
             <button
