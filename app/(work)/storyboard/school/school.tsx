@@ -42,7 +42,7 @@ const School = () => {
   return (
     <>
       <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
-        <figure className="h-150px] md:h-[250px] lg:h-[300px] bg-slate-100 flex  relative">
+        <figure className="h-150px] md:h-[250px] lg:h-[350px] bg-slate-100 flex  relative">
           <Image
             src={PageOne}
             alt="Storyboard Preview"
