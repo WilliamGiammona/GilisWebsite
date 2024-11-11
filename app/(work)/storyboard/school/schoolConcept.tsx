@@ -30,7 +30,7 @@ const EmotionalLogicalConcept = () => {
   return (
     <>
       <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
-        <figure className="h-[130px] md:h-[250px]  flex  relative">
+        <figure className="h-[150px] md:h-[250px]  flex  relative">
           <Image
             src={SchoolCharacters}
             alt="Concept Design Preview"
