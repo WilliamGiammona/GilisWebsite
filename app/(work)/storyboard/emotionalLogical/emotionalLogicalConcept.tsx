@@ -19,7 +19,7 @@ const EmotionalLogicalConcept = () => {
           />
         </figure>
         <p className="text-[#b0b0b0] text-left font-thin mt-4">
-          Concept Design - Emotional/Logical Design
+          Animatic - Emotional/Logical
         </p>
       </div>
 
