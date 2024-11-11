@@ -1,21 +1,44 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import { StaticImageData } from "next/image";
+
+// Import all images
 import PageOne from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage1.png";
 import PageTwo from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage2.png";
 import PageThree from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage3.png";
 import PageFour from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage4.png";
 import Emily from "../../../../public/images/storyboard/concept-design/emotional-logical/Emily.jpg";
 import Santiago from "../../../../public/images/storyboard/concept-design/emotional-logical/Santiago.jpg";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 
 const EmotionalLogical = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showCarousel, setShowCarousel] = useState(false);
 
-  const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
+  // Memoize the images array
+  const images = useMemo<StaticImageData[]>(
+    () => [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago],
+    []
+  );
+
+  // Preload adjacent images
+  useEffect(() => {
+    if (showCarousel) {
+      const nextIndex = (currentIndex + 1) % images.length;
+      const prevIndex =
+        currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+
+      // Create new image elements for preloading
+      const preloadNext = document.createElement("img");
+      const preloadPrev = document.createElement("img");
+
+      // Set the sources
+      preloadNext.src = images[nextIndex].src;
+      preloadPrev.src = images[prevIndex].src;
+    }
+  }, [currentIndex, showCarousel, images]);
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -27,17 +50,17 @@ const EmotionalLogical = () => {
 
   const closeCarousel = () => {
     setShowCarousel(false);
-    setCurrentIndex(0); // Reset to first image when closing
+    setCurrentIndex(0);
   };
 
   return (
     <>
       <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
-        <figure className="h-[150px] md:h-[400px]  flex  relative">
+        <figure className="h-[150px] md:h-[400px] flex relative">
           <Image
             src={PageOne}
             alt="Storyboard Preview"
-            className="w-full  h-[100%] "
+            className="w-full h-[100%]"
             priority
           />
         </figure>
@@ -46,7 +69,6 @@ const EmotionalLogical = () => {
         </p>
       </div>
 
-      {/* Carousel Modal */}
       {showCarousel && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
           <div className="relative w-full h-full flex items-center justify-center p-4">
@@ -65,6 +87,7 @@ const EmotionalLogical = () => {
               className="max-w-full max-h-full object-contain"
               width={1200}
               height={800}
+              priority={true}
               onClick={(e) => e.stopPropagation()}
             />
             <button
