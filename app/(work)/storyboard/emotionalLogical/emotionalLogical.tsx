@@ -5,6 +5,8 @@ import PageOne from "../../../../public/images/storyboard/emotional-logical/Emot
 import PageTwo from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage2.png";
 import PageThree from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage3.png";
 import PageFour from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage4.png";
+import Emily from "../../../../public/images/storyboard/concept-design/emotional-logical/Emily.jpg";
+import Santiago from "../../../../public/images/storyboard/concept-design/emotional-logical/Santiago.jpg";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -13,7 +15,7 @@ const EmotionalLogical = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showCarousel, setShowCarousel] = useState(false);
 
-  const images = [PageOne, PageTwo, PageThree, PageFour];
+  const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
 
   const nextImage = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
@@ -40,7 +42,7 @@ const EmotionalLogical = () => {
           />
         </figure>
         <p className="text-[#b0b0b0] text-left font-thin mt-4">
-          Storyboard and Animatic - Emotional/Logical Storyboard
+          Storyboard and Concept Design - Emotional/Logical
         </p>
       </div>
 
