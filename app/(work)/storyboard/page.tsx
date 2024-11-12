@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense, lazy } from "react";
 
-// Lazy load all components
+// Lazy imports remain the same...
 const CallCenter = lazy(() => import("./callCenter/callCenter"));
 const EmotionalLogical = lazy(
   () => import("./emotionalLogical/emotionalLogical")
@@ -22,22 +22,20 @@ const SouthPark = lazy(() => import("./southpark/Southpark"));
 const Office = lazy(() => import("./office/Office"));
 const VolleyBall = lazy(() => import("./volleyball/Volleyball"));
 
-// Loading component with skeleton animation
 const LoadingComponent = () => (
   <div className="animate-pulse">
-    <div className="h-[150px] md:h-[400px] bg-gray-700 rounded-lg mb-4"></div>
+    <div className="h-32 sm:h-48 md:h-64 lg:h-[400px] bg-gray-700 rounded-lg mb-4"></div>
     <div className="h-4 bg-gray-700 w-2/3 rounded"></div>
   </div>
 );
 
 const Storyboard = () => {
   return (
-    <div className="min-h-screen bg-black lg:pt-20">
-      {/* Two Column Sections */}
-      <div className="space-y-4 md:space-y-8 px-8 md:px-16">
-        {/* Call Center Section - Only left column */}
-        <div className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-8 lg:py-16 lg:px-4">
-          <div className="w-[70%] py-4 md:py-8 mt-28 lg:w-1/2 lg:py-0 lg:mt-0">
+    <div className="min-h-screen bg-black pt-28 sm:pt-32 md:pt-32 lg:pt-32 pb-8 sm:pb-12 md:pb-16">
+      <div className="space-y-8 px-4 sm:px-6 md:px-8 lg:px-16">
+        {/* Call Center Section */}
+        <div className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-4 lg:gap-8">
+          <div className="w-4/5 sm:w-3/4 md:w-2/3 lg:w-1/2">
             <Suspense fallback={<LoadingComponent />}>
               <CallCenter />
             </Suspense>
@@ -47,85 +45,50 @@ const Storyboard = () => {
           </div>
         </div>
 
-        {/* Emotional Logical Section */}
-        <div className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-8 lg:py-16 lg:px-4">
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <EmotionalLogical />
-            </Suspense>
+        {/* Two Column Sections */}
+        {[
+          [EmotionalLogical, EmotionalLogicalConcept],
+          [School, SchoolConcept],
+          [IntrovertClub, IntrovertClubConcept],
+        ].map(([LeftComponent, RightComponent], index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-4 lg:gap-8"
+          >
+            <div className="w-4/5 sm:w-3/4 md:w-2/3 lg:w-1/2">
+              <Suspense fallback={<LoadingComponent />}>
+                <LeftComponent />
+              </Suspense>
+            </div>
+            <div className="w-4/5 sm:w-3/4 md:w-2/3 lg:w-1/2">
+              <Suspense fallback={<LoadingComponent />}>
+                <RightComponent />
+              </Suspense>
+            </div>
           </div>
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <EmotionalLogicalConcept />
-            </Suspense>
-          </div>
-        </div>
+        ))}
 
-        {/* School Section */}
-        <div className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-8 lg:py-16 lg:px-4">
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <School />
-            </Suspense>
+        {/* Three Column Sections */}
+        {[
+          [FightingScene, ChaseTheDragon, Train],
+          [SouthPark, Office, VolleyBall],
+        ].map((components, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto gap-4 lg:gap-8 place-items-center"
+          >
+            {components.map((Component, compIndex) => (
+              <div
+                key={compIndex}
+                className="w-4/5 sm:w-11/12 md:w-5/6 lg:w-full"
+              >
+                <Suspense fallback={<LoadingComponent />}>
+                  <Component />
+                </Suspense>
+              </div>
+            ))}
           </div>
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <SchoolConcept />
-            </Suspense>
-          </div>
-        </div>
-
-        {/* Introvert Club Section */}
-        <div className="flex flex-col items-center lg:flex-row justify-center max-w-7xl mx-auto gap-8 lg:py-16 lg:px-4">
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <IntrovertClub />
-            </Suspense>
-          </div>
-          <div className="w-[70%] py-4 md:py-8 lg:w-1/2 lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <IntrovertClubConcept />
-            </Suspense>
-          </div>
-        </div>
-
-        {/* Three Column Action Scenes */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 max-w-7xl mx-auto gap-8 lg:py-16 lg:px-4 place-items-center">
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <FightingScene />
-            </Suspense>
-          </div>
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <ChaseTheDragon />
-            </Suspense>
-          </div>
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <Train />
-            </Suspense>
-          </div>
-        </div>
-
-        {/* Three Column Misc Scenes */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 max-w-7xl mx-auto gap-8 py-8 lg:py-16 lg:px-4 place-items-center">
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <SouthPark />
-            </Suspense>
-          </div>
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <Office />
-            </Suspense>
-          </div>
-          <div className="w-[50%] lg:w-full lg:py-0">
-            <Suspense fallback={<LoadingComponent />}>
-              <VolleyBall />
-            </Suspense>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
