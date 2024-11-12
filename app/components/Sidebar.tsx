@@ -179,13 +179,13 @@ export default function Sidebar() {
               {isWorkOpen && (
                 <div className="mt-2 py-2 px-4 bg-[rgb(44,44,44)] rounded-lg w-fit">
                   <Link
-                    href="/work/3d"
+                    href="/3d"
                     className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light"
                   >
                     3D
                   </Link>
                   <Link
-                    href="/work/storyboard"
+                    href="/storyboard"
                     className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light"
                   >
                     Storyboard
