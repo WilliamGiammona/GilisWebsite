@@ -70,16 +70,22 @@ const EmotionalLogical = () => {
       </div>
 
       {showCarousel && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-90 z-[200] flex items-center justify-center">
           <div className="relative w-full h-full flex items-center justify-center p-4">
             <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-[#38bdda] transition-colors z-50"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors z-50"
               onClick={(e) => {
                 e.stopPropagation();
                 prevImage();
               }}
             >
               <FaArrowLeft size={32} />
+            </button>
+            <button
+              className="fixed top-6 right-4 text-gray-400 hover:text-gray-200 transition-colors z-[300]"
+              onClick={closeCarousel}
+            >
+              <IoMdClose size={32} />
             </button>
             <Image
               src={images[currentIndex]}
@@ -91,19 +97,13 @@ const EmotionalLogical = () => {
               onClick={(e) => e.stopPropagation()}
             />
             <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-[#38bdda] transition-colors z-50"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors z-50"
               onClick={(e) => {
                 e.stopPropagation();
                 nextImage();
               }}
             >
               <FaArrowRight size={32} />
-            </button>
-            <button
-              className="absolute top-4 right-4 text-white hover:text-[#38bdda] transition-colors"
-              onClick={closeCarousel}
-            >
-              <IoMdClose size={32} />
             </button>
           </div>
         </div>
