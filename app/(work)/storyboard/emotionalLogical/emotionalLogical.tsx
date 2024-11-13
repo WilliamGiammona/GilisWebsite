@@ -28,28 +28,21 @@ const EmotionalLogical = () => {
 
   const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
 
-  // Handle keyboard navigation and current slide tracking
-  useEffect(() => {
+  // Handle keyboard navigation using Dialog's built-in keyboard handling
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "ArrowLeft":
-          api?.scrollPrev();
-          break;
-        case "ArrowRight":
-          api?.scrollNext();
-          break;
-        case "Escape":
-          setIsOpen(false);
-          break;
-      }
-    };
+    switch (e.key) {
+      case "ArrowLeft":
+        api?.scrollPrev();
+        break;
+      case "ArrowRight":
+        api?.scrollNext();
+        break;
+    }
+  };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, api]);
-
+  // Track current slide
   useEffect(() => {
     if (!api) return;
 
@@ -77,7 +70,10 @@ const EmotionalLogical = () => {
 
       {/* Full Screen Carousel Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none">
+        <DialogContent
+          className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none"
+          onKeyDown={handleKeyDown}
+        >
           <DialogTitle className="sr-only">Storyboard Gallery</DialogTitle>
 
           {/* Close Button */}
