@@ -71,7 +71,7 @@ const CallCenter = () => {
           {/* Close Button */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
+            className="absolute right-4 top-24 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
           >
             <IoMdClose size={32} />
           </button>

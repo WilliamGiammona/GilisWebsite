@@ -85,7 +85,7 @@ const EmotionalLogical = () => {
           </button>
 
           {/* Slide Counter */}
-          <div className="absolute left-4 top-20 md:top-4 text-gray-400 z-50">
+          <div className="absolute left-4 top-24 md:top-4 text-gray-400 z-50">
             {current + 1} / {images.length}
           </div>
 
