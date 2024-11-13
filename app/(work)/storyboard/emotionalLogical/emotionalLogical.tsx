@@ -7,8 +7,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+} from "@/app/components/ui/carousel";
+import { Dialog, DialogContent } from "@/app/components/ui/dialog";
 import { IoMdClose } from "react-icons/io";
 
 // Import all images
