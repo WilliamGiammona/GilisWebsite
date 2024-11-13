@@ -28,6 +28,12 @@ const EmotionalLogical = () => {
 
   const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
 
+  const handleClose = () => {
+    setIsOpen(false);
+    setCurrent(0);
+    api?.scrollTo(0);
+  };
+
   // Handle keyboard navigation using Dialog's built-in keyboard handling
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
@@ -51,15 +57,6 @@ const EmotionalLogical = () => {
     });
   }, [api]);
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
-    if (!open) {
-      // Reset to first slide when closing
-      setCurrent(0);
-      api?.scrollTo(0);
-    }
-  };
-
   return (
     <>
       {/* Preview Image */}
@@ -78,7 +75,7 @@ const EmotionalLogical = () => {
       </div>
 
       {/* Full Screen Carousel Dialog */}
-      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent
           className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none"
           onKeyDown={handleKeyDown}
@@ -87,7 +84,7 @@ const EmotionalLogical = () => {
 
           {/* Close Button */}
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
             className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
           >
             <IoMdClose size={32} />
