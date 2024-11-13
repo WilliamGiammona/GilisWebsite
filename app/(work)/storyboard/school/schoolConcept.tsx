@@ -24,6 +24,12 @@ const SchoolConcept = () => {
 
   const images = [SchoolCharacters, Classroom, Hallway];
 
+  const handleClose = () => {
+    setIsOpen(false);
+    setCurrent(0);
+    api?.scrollTo(0);
+  };
+
   // Handle keyboard navigation using Dialog's built-in keyboard handling
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen) return;
@@ -73,7 +79,7 @@ const SchoolConcept = () => {
 
           {/* Close Button */}
           <button
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
             className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
           >
             <IoMdClose size={32} />
