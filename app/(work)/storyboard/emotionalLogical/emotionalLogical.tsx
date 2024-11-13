@@ -47,7 +47,7 @@ const EmotionalLogical = () => {
           <DialogTitle className="sr-only">Storyboard Gallery</DialogTitle>
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute right-4 top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
+            className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
           >
             <IoMdClose size={32} />
           </button>
