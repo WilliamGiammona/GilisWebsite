@@ -1,62 +1,60 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselApi,
+} from "@/app/components/ui/carousel";
+import { Dialog, DialogContent, DialogTitle } from "@/app/components/ui/dialog";
 import { IoMdClose } from "react-icons/io";
-import { StaticImageData } from "next/image";
 
 import SchoolCharacters from "../../../../public/images/storyboard/concept-design/school/SchoolCharacters.jpg";
 import Classroom from "../../../../public/images/storyboard/concept-design/school/Classroom.jpg";
 import Hallway from "../../../../public/images/storyboard/concept-design/school/Hallway.jpg";
 
 const SchoolConcept = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showCarousel, setShowCarousel] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  // Memoize the images array
-  const images = useMemo<StaticImageData[]>(
-    () => [SchoolCharacters, Classroom, Hallway],
-    []
-  );
+  const images = [SchoolCharacters, Classroom, Hallway];
 
-  // Preload adjacent images
-  useEffect(() => {
-    if (showCarousel) {
-      const nextIndex = (currentIndex + 1) % images.length;
-      const prevIndex =
-        currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+  // Handle keyboard navigation using Dialog's built-in keyboard handling
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!isOpen) return;
 
-      // Create new image elements for preloading
-      const preloadNext = document.createElement("img");
-      const preloadPrev = document.createElement("img");
-
-      // Set the sources
-      preloadNext.src = images[nextIndex].src;
-      preloadPrev.src = images[prevIndex].src;
+    switch (e.key) {
+      case "ArrowLeft":
+        api?.scrollPrev();
+        break;
+      case "ArrowRight":
+        api?.scrollNext();
+        break;
     }
-  }, [currentIndex, showCarousel, images]);
-
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
+  // Track current slide
+  useEffect(() => {
+    if (!api) return;
 
-  const closeCarousel = () => {
-    setShowCarousel(false);
-    setCurrentIndex(0);
-  };
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <>
-      <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
+      <div onClick={() => setIsOpen(true)} className="cursor-pointer">
         <figure className="h-[150px] md:h-[250px] flex relative">
           <Image
             src={SchoolCharacters}
             alt="Concept Design Preview"
-            className="w-full h-[100%]"
+            className="w-full h-full object-cover"
             priority
           />
         </figure>
@@ -65,46 +63,55 @@ const SchoolConcept = () => {
         </p>
       </div>
 
-      {/* Carousel Modal */}
-      {showCarousel && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center">
-          <div className="relative w-full h-full flex items-center justify-center p-4">
-            <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-[#38bdda] transition-colors z-50"
-              onClick={(e) => {
-                e.stopPropagation();
-                prevImage();
-              }}
-            >
-              <FaArrowLeft size={32} />
-            </button>
-            <Image
-              src={images[currentIndex]}
-              alt={`Concept design ${currentIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
-              width={1200}
-              height={800}
-              priority={true}
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-[#38bdda] transition-colors z-50"
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
-            >
-              <FaArrowRight size={32} />
-            </button>
-            <button
-              className="absolute top-4 right-4 text-white hover:text-[#38bdda] transition-colors"
-              onClick={closeCarousel}
-            >
-              <IoMdClose size={32} />
-            </button>
+      {/* Full Screen Carousel Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent
+          className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none"
+          onKeyDown={handleKeyDown}
+        >
+          <DialogTitle className="sr-only">School Concept Gallery</DialogTitle>
+
+          {/* Close Button */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
+          >
+            <IoMdClose size={32} />
+          </button>
+
+          {/* Slide Counter */}
+          <div className="absolute left-4 top-20 md:top-4 text-gray-400 z-50">
+            {current + 1} / {images.length}
           </div>
-        </div>
-      )}
+
+          <Carousel className="w-full h-full" setApi={setApi}>
+            <CarouselContent>
+              {images.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="flex items-center justify-center h-[90vh] relative">
+                    {loading && index === current && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-4 border-gray-400 border-t-gray-200 rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                    <Image
+                      src={image}
+                      alt={`Concept design ${index + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                      width={1200}
+                      height={800}
+                      priority={true}
+                      onLoadingComplete={() => setLoading(false)}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4 text-gray-400 hover:text-gray-200 hover:bg-black/50" />
+            <CarouselNext className="right-4 text-gray-400 hover:text-gray-200 hover:bg-black/50" />
+          </Carousel>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
