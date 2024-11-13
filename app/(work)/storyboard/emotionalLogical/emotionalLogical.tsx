@@ -51,6 +51,15 @@ const EmotionalLogical = () => {
     });
   }, [api]);
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      // Reset to first slide when closing
+      setCurrent(0);
+      api?.scrollTo(0);
+    }
+  };
+
   return (
     <>
       {/* Preview Image */}
@@ -69,7 +78,7 @@ const EmotionalLogical = () => {
       </div>
 
       {/* Full Screen Carousel Dialog */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent
           className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none"
           onKeyDown={handleKeyDown}
