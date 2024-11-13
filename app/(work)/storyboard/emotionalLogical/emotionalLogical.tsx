@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/app/components/ui/carousel";
-import { Dialog, DialogContent } from "@/app/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/app/components/ui/dialog";
 import { IoMdClose } from "react-icons/io";
 
 // Import all images
@@ -44,6 +44,7 @@ const EmotionalLogical = () => {
       {/* Full Screen Carousel Dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none">
+          <DialogTitle className="sr-only">Storyboard Gallery</DialogTitle>
           <button
             onClick={() => setIsOpen(false)}
             className="absolute right-4 top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
