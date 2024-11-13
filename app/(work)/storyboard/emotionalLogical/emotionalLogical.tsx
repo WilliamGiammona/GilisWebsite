@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   Carousel,
@@ -7,6 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  CarouselApi,
 } from "@/app/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/app/components/ui/dialog";
 import { IoMdClose } from "react-icons/io";
@@ -21,8 +22,41 @@ import Santiago from "../../../../public/images/storyboard/concept-design/emotio
 
 const EmotionalLogical = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
+
+  // Handle keyboard navigation and current slide tracking
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          api?.scrollPrev();
+          break;
+        case "ArrowRight":
+          api?.scrollNext();
+          break;
+        case "Escape":
+          setIsOpen(false);
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, api]);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap());
+    });
+  }, [api]);
 
   return (
     <>
@@ -45,6 +79,8 @@ const EmotionalLogical = () => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none">
           <DialogTitle className="sr-only">Storyboard Gallery</DialogTitle>
+
+          {/* Close Button */}
           <button
             onClick={() => setIsOpen(false)}
             className="absolute right-4 top-20 md:top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
@@ -52,11 +88,21 @@ const EmotionalLogical = () => {
             <IoMdClose size={32} />
           </button>
 
-          <Carousel className="w-full h-full">
+          {/* Slide Counter */}
+          <div className="absolute left-4 top-20 md:top-4 text-gray-400 z-50">
+            {current + 1} / {images.length}
+          </div>
+
+          <Carousel className="w-full h-full" setApi={setApi}>
             <CarouselContent>
               {images.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="flex items-center justify-center h-[90vh]">
+                  <div className="flex items-center justify-center h-[90vh] relative">
+                    {loading && index === current && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-4 border-gray-400 border-t-gray-200 rounded-full animate-spin"></div>
+                      </div>
+                    )}
                     <Image
                       src={image}
                       alt={`Storyboard page ${index + 1}`}
@@ -64,6 +110,7 @@ const EmotionalLogical = () => {
                       width={1200}
                       height={800}
                       priority={true}
+                      onLoadingComplete={() => setLoading(false)}
                     />
                   </div>
                 </CarouselItem>
