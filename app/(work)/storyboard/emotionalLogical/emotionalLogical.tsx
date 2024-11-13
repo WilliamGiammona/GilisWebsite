@@ -1,9 +1,15 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { IoMdClose } from "react-icons/io";
-import { StaticImageData } from "next/image";
 
 // Import all images
 import PageOne from "../../../../public/images/storyboard/emotional-logical/EmotionalLogicalPage1.png";
@@ -14,53 +20,19 @@ import Emily from "../../../../public/images/storyboard/concept-design/emotional
 import Santiago from "../../../../public/images/storyboard/concept-design/emotional-logical/Santiago.jpg";
 
 const EmotionalLogical = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showCarousel, setShowCarousel] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  // Memoize the images array
-  const images = useMemo<StaticImageData[]>(
-    () => [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago],
-    []
-  );
-
-  // Preload adjacent images
-  useEffect(() => {
-    if (showCarousel) {
-      const nextIndex = (currentIndex + 1) % images.length;
-      const prevIndex =
-        currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-
-      // Create new image elements for preloading
-      const preloadNext = document.createElement("img");
-      const preloadPrev = document.createElement("img");
-
-      // Set the sources
-      preloadNext.src = images[nextIndex].src;
-      preloadPrev.src = images[prevIndex].src;
-    }
-  }, [currentIndex, showCarousel, images]);
-
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevImage = () => {
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const closeCarousel = () => {
-    setShowCarousel(false);
-    setCurrentIndex(0);
-  };
+  const images = [PageOne, PageTwo, PageThree, PageFour, Emily, Santiago];
 
   return (
     <>
-      <div onClick={() => setShowCarousel(true)} className="cursor-pointer">
+      {/* Preview Image */}
+      <div onClick={() => setIsOpen(true)} className="cursor-pointer">
         <figure className="h-[150px] md:h-[400px] flex relative">
           <Image
             src={PageOne}
             alt="Storyboard Preview"
-            className="w-full h-[100%]"
+            className="w-full h-full object-cover"
             priority
           />
         </figure>
@@ -69,45 +41,38 @@ const EmotionalLogical = () => {
         </p>
       </div>
 
-      {showCarousel && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-[200] flex items-center justify-center">
-          <div className="relative w-full h-full flex items-center justify-center p-4">
-            <button
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors z-50"
-              onClick={(e) => {
-                e.stopPropagation();
-                prevImage();
-              }}
-            >
-              <FaArrowLeft size={32} />
-            </button>
-            <button
-              className="fixed top-6 right-4 text-gray-400 hover:text-gray-200 transition-colors z-[300]"
-              onClick={closeCarousel}
-            >
-              <IoMdClose size={32} />
-            </button>
-            <Image
-              src={images[currentIndex]}
-              alt={`Storyboard page ${currentIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
-              width={1200}
-              height={800}
-              priority={true}
-              onClick={(e) => e.stopPropagation()}
-            />
-            <button
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200 transition-colors z-50"
-              onClick={(e) => {
-                e.stopPropagation();
-                nextImage();
-              }}
-            >
-              <FaArrowRight size={32} />
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Full Screen Carousel Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black border-none">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute right-4 top-4 text-gray-400 hover:text-gray-200 transition-colors z-50"
+          >
+            <IoMdClose size={32} />
+          </button>
+
+          <Carousel className="w-full h-full">
+            <CarouselContent>
+              {images.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="flex items-center justify-center h-[90vh]">
+                    <Image
+                      src={image}
+                      alt={`Storyboard page ${index + 1}`}
+                      className="max-w-full max-h-full object-contain"
+                      width={1200}
+                      height={800}
+                      priority={true}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4 text-gray-400 hover:text-gray-200 hover:bg-black/50" />
+            <CarouselNext className="right-4 text-gray-400 hover:text-gray-200 hover:bg-black/50" />
+          </Carousel>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
