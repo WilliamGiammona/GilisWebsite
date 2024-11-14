@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 
 const backgrounds = [
-  "/images/background/dining-background.jpg",
-  "/images/background/magical-night-background.jpg",
   "/images/background/winter-girl-background.jpg",
-  "/images/background/japanese-decor-background.jpg",
+  "/images/background/dining-background.jpg",
   "/images/background/tribal-boy-background.jpg",
+  "/images/background/magical-night-background.jpg",
+  "/images/background/japanese-decor-background.jpg",
 ] as const;
 
 export default function Home() {
