@@ -23,7 +23,7 @@ export default function NavBar() {
           <div className="flex items-center">
             <Image
               src="/images/logo/secondary-logo.png"
-              alt="Gili Lipschitz Logo"
+              alt="Gili Giammona Logo"
               width={150}
               height={40}
             />
@@ -98,7 +98,7 @@ export default function NavBar() {
         <div className="flex items-center justify-between">
           <Image
             src="/images/logo/secondary-logo.png"
-            alt="Gili Lipschitz Logo"
+            alt="Gili Giammona Logo"
             width={200}
             height={60}
           />
@@ -138,7 +138,9 @@ export default function NavBar() {
               <button
                 onClick={() => setIsWorkOpen(!isWorkOpen)}
                 className={`flex items-center ${
-                  pathname === "/work" ? "text-[#38bdda]" : "text-[#b0b0b0]"
+                  pathname === "/3d" || pathname === "/storyboard"
+                    ? "text-[#38bdda]"
+                    : "text-[#b0b0b0]"
                 } hover:opacity-60 font-light`}
               >
                 <div className="flex items-center">
