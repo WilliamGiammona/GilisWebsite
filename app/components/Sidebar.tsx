@@ -78,6 +78,12 @@ export default function Sidebar() {
                 >
                   Storyboard
                 </Link>
+                <Link
+                  href="/illustrations"
+                  className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light"
+                >
+                  Illustrations
+                </Link>
               </div>
             )}
           </div>
