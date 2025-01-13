@@ -18,7 +18,7 @@ export default function NavBar() {
     <>
       {/* Desktop Navigation */}
       <div className="fixed top-0 w-full bg-[rgb(24,24,24)] p-4 z-40 hidden md:block">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center justify-between px-10 mx-auto">
           {/* Logo Section */}
           <div className="flex items-center">
             <Image
