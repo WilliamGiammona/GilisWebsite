@@ -53,7 +53,9 @@ export default function NavBar() {
               <button
                 onClick={() => setIsWorkOpen(!isWorkOpen)}
                 className={`flex items-center ${
-                  pathname === "/3d" || pathname === "/storyboard"
+                  pathname === "/3d" ||
+                  pathname === "/storyboard" ||
+                  pathname === "/illustrations"
                     ? "text-[#38bdda]"
                     : "text-[#b0b0b0]"
                 } hover:opacity-60 font-light`}
@@ -76,6 +78,12 @@ export default function NavBar() {
                     className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light whitespace-nowrap"
                   >
                     Storyboard
+                  </Link>
+                  <Link
+                    href="/illustrations"
+                    className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light whitespace-nowrap"
+                  >
+                    Illustrations
                   </Link>
                 </div>
               )}
@@ -138,7 +146,9 @@ export default function NavBar() {
               <button
                 onClick={() => setIsWorkOpen(!isWorkOpen)}
                 className={`flex items-center ${
-                  pathname === "/3d" || pathname === "/storyboard"
+                  pathname === "/3d" ||
+                  pathname === "/storyboard" ||
+                  pathname === "/illustrations"
                     ? "text-[#38bdda]"
                     : "text-[#b0b0b0]"
                 } hover:opacity-60 font-light`}
@@ -161,6 +171,12 @@ export default function NavBar() {
                     className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light"
                   >
                     Storyboard
+                  </Link>
+                  <Link
+                    href="/illustrations"
+                    className="block text-[#b0b0b0] hover:opacity-60 py-2 font-light"
+                  >
+                    Illustrations
                   </Link>
                 </div>
               )}
